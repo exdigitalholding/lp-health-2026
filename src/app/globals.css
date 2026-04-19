@@ -1,0 +1,86 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+@layer base {
+  :root {
+    --color-primary: #0d78ec;
+    --focus-ring: 3px;
+  }
+
+  html {
+    scroll-behavior: smooth;
+    -webkit-tap-highlight-color: transparent;
+  }
+
+  body {
+    @apply bg-white font-sans text-brand-text antialiased;
+    font-feature-settings: "rlig" 1, "calt" 1;
+  }
+
+  /* WCAG: strong, visible focus ring for keyboard navigation */
+  *:focus {
+    outline: none;
+  }
+
+  :focus-visible {
+    outline: var(--focus-ring) solid rgba(13, 120, 236, 0.55);
+    outline-offset: 2px;
+    border-radius: 6px;
+  }
+
+  ::selection {
+    background-color: rgba(13, 120, 236, 0.15);
+  }
+
+  /* Respect user's motion preferences (WCAG 2.3.3) */
+  @media (prefers-reduced-motion: reduce) {
+    *,
+    *::before,
+    *::after {
+      animation-duration: 0.01ms !important;
+      animation-iteration-count: 1 !important;
+      transition-duration: 0.01ms !important;
+      scroll-behavior: auto !important;
+    }
+  }
+}
+
+@layer components {
+  /* Skip-to-content link — visible only on keyboard focus */
+  .skip-link {
+    @apply sr-only;
+  }
+  .skip-link:focus-visible {
+    @apply not-sr-only fixed left-4 top-4 z-[100] rounded-lg bg-primary px-4 py-3 text-sm font-semibold text-white shadow-lg;
+  }
+}
+
+@layer utilities {
+  .text-gradient-brand {
+    background: linear-gradient(90deg, #0d78ec 0%, #3b82f6 50%, #60a5fa 100%);
+    -webkit-background-clip: text;
+    background-clip: text;
+    color: transparent;
+  }
+
+  .bg-grid-soft {
+    background-image:
+      linear-gradient(rgba(255, 255, 255, 0.04) 1px, transparent 1px),
+      linear-gradient(90deg, rgba(255, 255, 255, 0.04) 1px, transparent 1px);
+    background-size: 48px 48px;
+  }
+
+  .bg-dot-soft {
+    background-image: radial-gradient(
+      rgba(13, 120, 236, 0.12) 1px,
+      transparent 1px
+    );
+    background-size: 24px 24px;
+  }
+
+  /* Guarantee 44x44 minimum touch target on small interactive elements */
+  .tap-target {
+    @apply min-h-[44px] min-w-[44px];
+  }
+}
