@@ -3,6 +3,7 @@
 import { useEffect, useRef } from "react";
 
 import { track } from "@/lib/fpixel";
+import { getFbc, getFbp, newEventId, sendCapiEvent } from "@/lib/meta-capi";
 
 type Props = {
   event: "ViewContent" | "Lead" | "Contact";
@@ -31,7 +32,19 @@ export default function TrackOnView({
         for (const entry of entries) {
           if (!entry.isIntersecting) continue;
           if (once && fired) return;
-          track(event, { content_name: contentName });
+
+          // Evento hibrido: Pixel + CAPI com mesmo event_id
+          const eventId = newEventId(event);
+          track(event, { content_name: contentName }, eventId);
+          void sendCapiEvent({
+            eventName: event,
+            eventId,
+            eventSourceUrl: window.location.href,
+            custom: { content_name: contentName },
+            fbp: getFbp(),
+            fbc: getFbc(),
+          });
+
           fired = true;
           if (once) obs.disconnect();
         }

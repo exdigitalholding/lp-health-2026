@@ -5,12 +5,33 @@ import { usePathname } from "next/navigation";
 import { useEffect } from "react";
 
 import { FB_PIXEL_ID, pageview } from "@/lib/fpixel";
+import { getFbc, getFbp, newEventId, sendCapiEvent } from "@/lib/meta-capi";
 
 export default function MetaPixel() {
   const pathname = usePathname();
 
   useEffect(() => {
-    pageview();
+    // Se usuario chegou de anuncio Meta, a URL tem ?fbclid=...
+    // Precisamos persistir como cookie _fbc (90 dias) para usar em eventos posteriores.
+    if (typeof window !== "undefined" && !document.cookie.includes("_fbc=")) {
+      const fbclid = new URLSearchParams(window.location.search).get("fbclid");
+      if (fbclid) {
+        const fbc = `fb.1.${Date.now()}.${fbclid}`;
+        const maxAge = 90 * 24 * 60 * 60; // 90 dias
+        document.cookie = `_fbc=${fbc}; path=/; max-age=${maxAge}; SameSite=Lax; Secure`;
+      }
+    }
+
+    // PageView hibrido: Pixel + CAPI com mesmo event_id (deduplicacao 48h)
+    const eventId = newEventId("PageView");
+    pageview(eventId);
+    void sendCapiEvent({
+      eventName: "PageView",
+      eventId,
+      eventSourceUrl: window.location.href,
+      fbp: getFbp(),
+      fbc: getFbc(),
+    });
   }, [pathname]);
 
   return (
@@ -29,7 +50,6 @@ export default function MetaPixel() {
             s.parentNode.insertBefore(t,s)}(window, document,'script',
             'https://connect.facebook.net/en_US/fbevents.js');
             fbq('init', '${FB_PIXEL_ID}');
-            fbq('track', 'PageView');
           `,
         }}
       />
