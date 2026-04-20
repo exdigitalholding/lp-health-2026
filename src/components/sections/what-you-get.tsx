@@ -11,23 +11,31 @@ import { PRIMARY_CTA_HREF } from "@/config/landing";
 
 const mockups: CarouselSlide[] = [
   {
-    src: "/images/parceiros/12.png",
+    src: "/images/what-is/12.png",
     label: "Dashboard Health Voice",
     caption:
       "Tela real do produto: inicie a gravação em poucos toques.",
   },
   {
+    src: "/images/what-is/13.png",
     label: "Resumo da consulta",
     caption:
       "Conteúdo estruturado em seções clínicas: queixa, história, conduta.",
   },
   {
+    src: "/images/what-is/14.png",
     label: "Histórico do paciente",
     caption: "Contexto preservado entre retornos, sem releitura completa.",
   },
   {
+    src: "/images/what-is/15.png",
     label: "Conduta e acompanhamento",
     caption: "Próximos passos organizados, prontos para o prontuário.",
+  },
+  {
+    src: "/images/what-is/16.png",
+    label: "Continuidade assistencial",
+    caption: "Visão completa do paciente ao longo do tempo.",
   },
 ];
 
@@ -115,7 +123,7 @@ export default function WhatYouGet() {
             transition={{ duration: 0.5, delay: 0.15 }}
             className="relative"
           >
-            <ImageCarousel slides={mockups} />
+            <ImageCarousel slides={mockups} aspect="portrait" fit="cover" />
           </motion.div>
         </div>
 

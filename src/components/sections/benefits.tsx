@@ -11,16 +11,19 @@ import { PRIMARY_CTA_HREF } from "@/config/landing";
 
 const appScreens: CarouselSlide[] = [
   {
-    label: "Tela de gravação",
-    caption: "Interface discreta para iniciar o atendimento com 1 toque.",
+    src: "/images/testimonials/prints/print-23.png",
+    label: "Depoimento de médico sobre o Health Voice",
+    caption: "Relato real de quem já usa o Health Voice na rotina.",
   },
   {
-    label: "Consulta sendo estruturada",
-    caption: "Resultado organizado por seções clínicas em segundos.",
+    src: "/images/testimonials/prints/print-18.png",
+    label: "Depoimento sobre ganho de tempo no consultório",
+    caption: "Menos retrabalho e mais presença com o paciente.",
   },
   {
-    label: "Histórico do paciente",
-    caption: "Acesso rápido ao contexto de consultas anteriores.",
+    src: "/images/testimonials/prints/print-19.png",
+    label: "Depoimento sobre qualidade do registro clínico",
+    caption: "Registros mais completos e organizados em segundos.",
   },
 ];
 
@@ -96,7 +99,7 @@ export default function Benefits() {
           transition={{ duration: 0.55 }}
           className="mt-12"
         >
-          <ImageCarousel slides={appScreens} />
+          <ImageCarousel slides={appScreens} fit="contain" />
         </motion.div>
 
         <div className="mt-16 grid grid-cols-1 gap-6 md:grid-cols-3">

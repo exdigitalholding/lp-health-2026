@@ -12,7 +12,6 @@ import Security from "@/components/sections/security";
 import SocialProof from "@/components/sections/social-proof";
 import StartForm from "@/components/sections/start-form";
 import Testimonials from "@/components/sections/testimonials";
-import UsedBy from "@/components/sections/used-by";
 import WhatYouGet from "@/components/sections/what-you-get";
 import { FEATURES } from "@/config/landing";
 
@@ -46,7 +45,6 @@ export default function LandingPage() {
       />
 
       <Benefits />
-      <UsedBy />
       {FEATURES.testimonials && <Testimonials />}
       <Security />
       {FEATURES.plans && <Plans />}

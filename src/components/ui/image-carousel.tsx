@@ -19,14 +19,17 @@ interface ImageCarouselProps {
   slides: CarouselSlide[];
   /** Classe extra no wrapper externo. */
   className?: string;
-  /** Tamanho do slide (aspect ratio + largura máxima). Default: 1000×1000. */
-  aspect?: "square" | "video";
+  /** Tamanho do slide. "portrait" = 4/5, combina com imagens 1080×1350. */
+  aspect?: "square" | "video" | "portrait";
+  /** Como a imagem ocupa o slide. "contain" garante que nada seja cortado. */
+  fit?: "cover" | "contain";
 }
 
 export function ImageCarousel({
   slides,
   className,
   aspect = "square",
+  fit = "cover",
 }: ImageCarouselProps) {
   const [index, setIndex] = React.useState(0);
   const total = slides.length;
@@ -66,8 +69,11 @@ export function ImageCarousel({
     >
       <div
         className={cn(
-          "relative mx-auto w-full max-w-[1000px] overflow-hidden rounded-3xl border border-gray-200 bg-white shadow-2xl shadow-blue-100/60",
-          aspect === "square" ? "aspect-square" : "aspect-video",
+          "relative mx-auto w-full overflow-hidden rounded-3xl border border-gray-200 shadow-2xl shadow-blue-100/60",
+          aspect === "square" && "aspect-square max-w-[1000px]",
+          aspect === "video" && "aspect-video max-w-[1000px]",
+          aspect === "portrait" && "aspect-[4/5] max-w-[560px]",
+          fit === "contain" ? "bg-gray-50" : "bg-white",
         )}
         aria-live="polite"
         aria-atomic="true"
@@ -78,8 +84,12 @@ export function ImageCarousel({
             src={current.src}
             alt={current.label}
             fill
-            sizes="(min-width: 1024px) 1000px, 100vw"
-            className="object-cover"
+            sizes={
+              aspect === "portrait"
+                ? "(min-width: 1024px) 560px, 100vw"
+                : "(min-width: 1024px) 1000px, 100vw"
+            }
+            className={fit === "contain" ? "object-contain" : "object-cover"}
             priority={index === 0}
           />
         ) : (
