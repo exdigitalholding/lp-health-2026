@@ -1,5 +1,7 @@
 import toast from "react-hot-toast";
 
+import type { ApiContextProps } from "@/context/ApiContext";
+
 export interface LeadData {
   name: string;
   email: string;
@@ -8,19 +10,33 @@ export interface LeadData {
 
 export const LEAD_STORAGE_KEY = "hv_lead_data";
 
-// TODO: integrar com o endpoint real de captura de lead quando a rota/payload
-// forem definidos. Hoje apenas persiste no sessionStorage, loga no console e
-// exibe um toast de sucesso para validar o fluxo de UI da landing page.
-export async function submitLead(data: LeadData): Promise<void> {
-  try {
+function sanitizePhone(phone: string) {
+  return phone.replace(/\D/g, "");
+}
+
+export async function submitLead(
+  data: LeadData,
+  PostAPI: ApiContextProps["PostAPI"]
+): Promise<void> {
+  const payload = {
+    name: data.name.trim(),
+    email: data.email.trim().toLowerCase(),
+    mobilePhone: sanitizePhone(data.phone),
+  };
+
+  const response = await PostAPI("/auth/pre-register", payload, false);
+
+  if (response.status === 200) {
     if (typeof window !== "undefined") {
       sessionStorage.setItem(LEAD_STORAGE_KEY, JSON.stringify(data));
     }
-    console.info("[health-voice-lp] lead captured", data);
-    toast.success("Recebemos seus dados. Em breve entraremos em contato.");
-  } catch (error) {
-    console.error("[health-voice-lp] failed to capture lead", error);
-    toast.error("Não foi possível continuar. Tente novamente.");
-    throw error;
+    return;
   }
+
+  const message =
+    (response.body && (response.body.message || response.body.error)) ||
+    "Não foi possível concluir o cadastro. Tente novamente.";
+
+  toast.error(typeof message === "string" ? message : "Não foi possível concluir o cadastro.");
+  throw new Error(typeof message === "string" ? message : "pre-register failed");
 }

@@ -101,12 +101,12 @@ export default function StartForm() {
                 .
               </h2>
 
-              <p className="mt-5 max-w-lg text-base leading-relaxed text-gray-600 md:text-[17px] lg:ml-auto">
+              <p className="mt-5 hidden max-w-lg text-base leading-relaxed text-gray-600 md:text-[17px] lg:ml-auto lg:block">
                 Crie sua conta agora e veja, na sua própria rotina, como o
                 Health Voice devolve tempo e preserva o que importa na consulta.
               </p>
 
-              <ul className="mx-auto mt-7 flex max-w-md flex-col gap-3 text-left lg:ml-auto">
+              <ul className="mx-auto mt-7 hidden max-w-md flex-col gap-3 text-left lg:ml-auto lg:flex">
                 {guarantees.map((g) => (
                   <li
                     key={g}
@@ -120,7 +120,7 @@ export default function StartForm() {
                 ))}
               </ul>
 
-              <div className="mt-7 flex flex-wrap items-center justify-center gap-2 lg:justify-end">
+              <div className="mt-7 hidden flex-wrap items-center justify-center gap-2 lg:flex lg:justify-end">
                 {microBadges.map((b) => {
                   const Icon = b.icon;
                   return (

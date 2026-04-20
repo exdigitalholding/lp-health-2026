@@ -1,6 +1,8 @@
 import type { Metadata, Viewport } from "next";
 import { Poppins } from "next/font/google";
 import { Toaster } from "react-hot-toast";
+
+import Providers from "@/context/Providers";
 import "./globals.css";
 
 const poppins = Poppins({
@@ -66,7 +68,7 @@ export default function RootLayout({
         <a href="#main-content" className="skip-link">
           Pular para o conteúdo
         </a>
-        {children}
+        <Providers>{children}</Providers>
         <Toaster
           position="top-center"
           toastOptions={{

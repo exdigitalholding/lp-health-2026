@@ -2,6 +2,7 @@
 
 import { zodResolver } from "@hookform/resolvers/zod";
 import { ArrowRight, Loader2, Mail, Phone, User } from "lucide-react";
+import { useRouter } from "next/navigation";
 import { useState } from "react";
 import { useForm } from "react-hook-form";
 import toast from "react-hot-toast";
@@ -14,6 +15,7 @@ import {
   FormItem,
   FormMessage,
 } from "@/components/ui/form";
+import { useApiContext } from "@/context/ApiContext";
 import { submitLead, type LeadData } from "@/utils/lead";
 import { maskPhone } from "@/utils/masks";
 
@@ -35,6 +37,8 @@ export default function LeadForm({
   ctaLabel = "Criar minha conta grátis",
 }: LeadFormProps) {
   const [loading, setLoading] = useState(false);
+  const { PostAPI } = useApiContext();
+  const router = useRouter();
 
   const form = useForm<LeadFormValues>({
     resolver: zodResolver(LeadSchema),
@@ -53,8 +57,9 @@ export default function LeadForm({
     setLoading(true);
     try {
       const values = form.getValues() as LeadData;
-      await submitLead(values);
+      await submitLead(values, PostAPI);
       form.reset();
+      router.push("/parabens");
     } catch {
       // feedback já é disparado em submitLead
     } finally {

@@ -2,9 +2,20 @@
 
 import { motion, useReducedMotion } from "framer-motion";
 import { PlayCircle } from "lucide-react";
+import { useRef, useState } from "react";
 
 export default function Demo() {
   const reduce = useReducedMotion();
+  const videoRef = useRef<HTMLVideoElement>(null);
+  const [playing, setPlaying] = useState(false);
+
+  const handlePlay = () => {
+    const v = videoRef.current;
+    if (!v) return;
+    v.play();
+    setPlaying(true);
+  };
+
   return (
     <section
       id="como-funciona"
@@ -39,30 +50,42 @@ export default function Demo() {
           whileInView={{ opacity: 1, scale: 1 }}
           viewport={{ once: true, margin: "-80px" }}
           transition={{ duration: 0.6 }}
-          className="relative mx-auto mt-12 aspect-video w-full max-w-5xl overflow-hidden rounded-3xl border border-gray-200 bg-gradient-to-br from-gray-900 to-gray-800 shadow-2xl shadow-blue-200/40"
+          className="relative mx-auto mt-12 aspect-video w-full max-w-5xl overflow-hidden rounded-3xl border border-gray-200 bg-gray-900 shadow-2xl shadow-blue-200/40"
         >
-          <div
-            aria-hidden="true"
-            className="absolute inset-0 bg-[radial-gradient(circle_at_50%_50%,rgba(13,120,236,0.28),transparent_60%)]"
+          <video
+            ref={videoRef}
+            src="/videos/health-demo.mp4"
+            poster="/videos/health-demo-poster.jpg"
+            preload="metadata"
+            playsInline
+            controls={playing}
+            onEnded={() => setPlaying(false)}
+            onPause={() => setPlaying(false)}
+            onPlay={() => setPlaying(true)}
+            className="absolute inset-0 h-full w-full object-cover"
           />
-          <div className="absolute inset-0 flex flex-col items-center justify-center gap-4">
-            <button
-              type="button"
-              className="group relative flex flex-col items-center gap-3 text-white"
-              aria-label="Assistir demonstração do Health Voice (60 segundos)"
-            >
-              <div className="flex h-20 w-20 items-center justify-center rounded-full bg-white/10 backdrop-blur-md transition group-hover:bg-white/20 group-focus-visible:bg-white/20">
-                <PlayCircle size={48} strokeWidth={1.5} aria-hidden="true" />
-              </div>
-              <span className="text-sm font-medium opacity-80">
-                [ Placeholder — inserir vídeo real da demo ]
-              </span>
-            </button>
-          </div>
 
-          <div className="absolute bottom-4 right-4 rounded-full bg-black/60 px-3 py-1 text-xs font-medium text-white backdrop-blur-sm">
-            0:60
-          </div>
+          {!playing && (
+            <>
+              <button
+                type="button"
+                onClick={handlePlay}
+                aria-label="Assistir demonstração do Health Voice (60 segundos)"
+                className="group absolute inset-0 flex flex-col items-center justify-center gap-3 text-white transition"
+              >
+                <span className="flex h-20 w-20 items-center justify-center rounded-full bg-white/15 backdrop-blur-md ring-1 ring-white/30 transition group-hover:scale-105 group-hover:bg-white/25 group-focus-visible:bg-white/25">
+                  <PlayCircle size={48} strokeWidth={1.5} aria-hidden="true" />
+                </span>
+                <span className="text-sm font-medium opacity-90">
+                  Assistir demonstração
+                </span>
+              </button>
+
+              <div className="pointer-events-none absolute bottom-4 right-4 rounded-full bg-black/60 px-3 py-1 text-xs font-medium text-white backdrop-blur-sm">
+                0:60
+              </div>
+            </>
+          )}
         </motion.div>
 
         <p className="mx-auto mt-6 max-w-2xl text-center text-sm text-gray-600">

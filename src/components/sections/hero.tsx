@@ -118,10 +118,11 @@ export default function Hero() {
         </motion.ul>
 
         <motion.div
+          id="demo-video"
           initial={reduce ? false : { opacity: 0, y: 24 }}
           animate={{ opacity: 1, y: 0 }}
           transition={{ duration: 0.6, delay: 0.25, ease: "easeOut" }}
-          className="mt-14 w-full max-w-4xl"
+          className="mt-14 w-full max-w-4xl scroll-mt-24"
         >
           <VideoPlayer
             src={DEMO_VIDEO.src}

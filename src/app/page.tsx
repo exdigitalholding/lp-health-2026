@@ -19,7 +19,7 @@ export default function LandingPage() {
   return (
     <main
       id="main-content"
-      className="flex min-h-screen w-full flex-col bg-white text-gray-900"
+      className="flex min-h-screen w-full flex-col bg-white pb-24 text-gray-900 md:pb-0"
     >
       <LpNavbar />
       <Hero />

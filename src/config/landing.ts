@@ -30,3 +30,16 @@ export const FEATURES = {
 
 /** Âncora do formulário de cadastro principal (usado pelos CTAs "Criar minha conta"). */
 export const PRIMARY_CTA_HREF = "#comecar";
+
+/**
+ * Contato via WhatsApp — usado nos botões fixos (navbar topo + toolbar mobile).
+ * Número no formato internacional (sem símbolos) para o link wa.me.
+ */
+export const WHATSAPP = {
+  number: "5541963475328",
+  message: "Vi a Health Voice e quero conhecer",
+};
+
+export const WHATSAPP_HREF = `https://wa.me/${WHATSAPP.number}?text=${encodeURIComponent(
+  WHATSAPP.message,
+)}`;
