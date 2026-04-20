@@ -3,6 +3,8 @@
 import { motion, useReducedMotion } from "framer-motion";
 import { CheckCircle2, FileText, Mic, Stethoscope } from "lucide-react";
 
+import TrackOnView from "@/components/TrackOnView";
+
 const steps = [
   {
     icon: Mic,
@@ -38,6 +40,7 @@ export default function HowItWorks() {
       aria-labelledby="how-heading"
       className="w-full bg-white py-24"
     >
+      <TrackOnView event="ViewContent" contentName="como-funciona" />
       <div className="mx-auto max-w-7xl px-6">
         <motion.div
           initial={reduce ? false : { opacity: 0, y: 20 }}

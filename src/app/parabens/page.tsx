@@ -10,6 +10,7 @@ import {
   Smartphone,
 } from "lucide-react";
 
+import WhatsAppLink from "@/components/WhatsAppLink";
 import { WHATSAPP, WHATSAPP_HREF } from "@/config/landing";
 
 export const metadata: Metadata = {
@@ -173,16 +174,15 @@ export default function ParabensPage() {
               </div>
             </div>
 
-            <a
+            <WhatsAppLink
               href={whatsappWelcomeHref}
-              target="_blank"
-              rel="noopener noreferrer"
+              source="parabens-welcome"
               className="inline-flex h-12 items-center justify-center gap-2 rounded-full bg-emerald-500 px-6 font-semibold text-white shadow-lg shadow-emerald-500/30 transition hover:bg-emerald-600"
             >
               <MessageCircle size={18} />
               Falar no WhatsApp
               <ArrowRight size={16} />
-            </a>
+            </WhatsAppLink>
           </div>
         </section>
 
@@ -194,16 +194,15 @@ export default function ParabensPage() {
       </div>
 
       {/* WhatsApp floating */}
-      <a
+      <WhatsAppLink
         href={WHATSAPP_HREF}
-        target="_blank"
-        rel="noopener noreferrer"
+        source="parabens-floating"
         aria-label="Falar no WhatsApp"
         className="fixed bottom-5 right-5 z-50 inline-flex items-center gap-2 rounded-full bg-emerald-500 px-4 py-3 text-sm font-semibold text-white shadow-xl shadow-emerald-500/40 transition hover:-translate-y-0.5 hover:bg-emerald-600 md:bottom-8 md:right-8"
       >
         <MessageCircle size={18} />
         <span className="hidden sm:inline">Falar no WhatsApp</span>
-      </a>
+      </WhatsAppLink>
     </main>
   );
 }

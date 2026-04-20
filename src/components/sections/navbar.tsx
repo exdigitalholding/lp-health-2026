@@ -14,6 +14,9 @@ import Link from "next/link";
 import { useEffect, useState } from "react";
 
 import { FEATURES, WHATSAPP_HREF } from "@/config/landing";
+import { track } from "@/lib/fpixel";
+
+const onWhatsAppClick = () => track("Contact", { source: "whatsapp" });
 
 const baseLinks = [
   { href: "#como-funciona", label: "Como funciona" },
@@ -122,6 +125,7 @@ export default function LpNavbar() {
               href={WHATSAPP_HREF}
               target="_blank"
               rel="noopener noreferrer"
+              onClick={onWhatsAppClick}
               aria-label="Falar no WhatsApp"
               className="tap-target inline-flex items-center gap-2 rounded-lg border border-emerald-200 bg-emerald-50 px-3 py-2 text-sm font-semibold text-emerald-700 transition hover:bg-emerald-100"
             >
@@ -141,6 +145,7 @@ export default function LpNavbar() {
               href={WHATSAPP_HREF}
               target="_blank"
               rel="noopener noreferrer"
+              onClick={onWhatsAppClick}
               aria-label="Falar no WhatsApp"
               className="tap-target inline-flex items-center justify-center rounded-lg text-emerald-600 transition hover:bg-emerald-50"
             >
@@ -183,7 +188,10 @@ export default function LpNavbar() {
               href={WHATSAPP_HREF}
               target="_blank"
               rel="noopener noreferrer"
-              onClick={() => setOpen(false)}
+              onClick={() => {
+                onWhatsAppClick();
+                setOpen(false);
+              }}
               className="mt-2 inline-flex h-12 items-center justify-center gap-2 rounded-lg border border-emerald-200 bg-emerald-50 px-4 text-sm font-semibold text-emerald-700 transition hover:bg-emerald-100"
             >
               <MessageCircle size={18} aria-hidden="true" />
@@ -225,6 +233,7 @@ export default function LpNavbar() {
               href={WHATSAPP_HREF}
               target="_blank"
               rel="noopener noreferrer"
+              onClick={onWhatsAppClick}
               aria-label="Falar no WhatsApp"
               className="tap-target flex flex-1 flex-col items-center justify-center gap-0.5 rounded-xl bg-emerald-500 px-1 py-1.5 text-[11px] font-semibold text-white shadow-sm transition-colors hover:bg-emerald-600 active:bg-emerald-700"
             >

@@ -2,6 +2,7 @@ import type { Metadata, Viewport } from "next";
 import { Poppins } from "next/font/google";
 import { Toaster } from "react-hot-toast";
 
+import MetaPixel from "@/components/MetaPixel";
 import Providers from "@/context/Providers";
 import "./globals.css";
 
@@ -65,6 +66,7 @@ export default function RootLayout({
   return (
     <html lang="pt-BR" className={poppins.variable}>
       <body>
+        <MetaPixel />
         <a href="#main-content" className="skip-link">
           Pular para o conteúdo
         </a>

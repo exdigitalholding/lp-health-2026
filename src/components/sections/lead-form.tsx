@@ -16,6 +16,7 @@ import {
   FormMessage,
 } from "@/components/ui/form";
 import { useApiContext } from "@/context/ApiContext";
+import { track } from "@/lib/fpixel";
 import { submitLead, type LeadData } from "@/utils/lead";
 import { maskPhone } from "@/utils/masks";
 
@@ -58,6 +59,7 @@ export default function LeadForm({
     try {
       const values = form.getValues() as LeadData;
       await submitLead(values, PostAPI);
+      track("Lead", { content_name: "Criar conta grátis" });
       form.reset();
       router.push("/parabens");
     } catch {
