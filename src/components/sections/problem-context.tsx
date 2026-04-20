@@ -1,7 +1,28 @@
 "use client";
 
 import { motion, useReducedMotion } from "framer-motion";
-import { Brain, ClipboardX, UserX } from "lucide-react";
+import { ArrowRight, Brain, ClipboardX, UserX } from "lucide-react";
+
+import {
+  ImageCarousel,
+  type CarouselSlide,
+} from "@/components/ui/image-carousel";
+import { PRIMARY_CTA_HREF } from "@/config/landing";
+
+const momentsSlides: CarouselSlide[] = [
+  {
+    label: "Antes: tempo dividido entre tela e paciente",
+    caption: "Imagem real do contexto clínico — substitua depois.",
+  },
+  {
+    label: "Durante: médico presente na consulta",
+    caption: "Captura discreta, sem interromper o fluxo.",
+  },
+  {
+    label: "Depois: registro estruturado pronto para revisão",
+    caption: "Resumo clínico organizado, sem retrabalho.",
+  },
+];
 
 const problems = [
   {
@@ -75,6 +96,16 @@ export default function ProblemContext() {
           })}
         </div>
 
+        <motion.div
+          initial={reduce ? false : { opacity: 0, y: 20 }}
+          whileInView={{ opacity: 1, y: 0 }}
+          viewport={{ once: true, margin: "-80px" }}
+          transition={{ duration: 0.55 }}
+          className="mt-14"
+        >
+          <ImageCarousel slides={momentsSlides} />
+        </motion.div>
+
         <motion.figure
           initial={reduce ? false : { opacity: 0 }}
           whileInView={{ opacity: 1 }}
@@ -93,6 +124,22 @@ export default function ProblemContext() {
             — Depoimento real de médico parceiro
           </figcaption>
         </motion.figure>
+
+        <motion.div
+          initial={reduce ? false : { opacity: 0, y: 16 }}
+          whileInView={{ opacity: 1, y: 0 }}
+          viewport={{ once: true, margin: "-60px" }}
+          transition={{ duration: 0.5, delay: 0.1 }}
+          className="mt-10 flex justify-center"
+        >
+          <a
+            href={PRIMARY_CTA_HREF}
+            className="inline-flex h-12 items-center gap-2 rounded-xl bg-primary px-6 text-sm font-semibold text-white shadow-sm transition hover:bg-primary-600"
+          >
+            Começar agora — é grátis
+            <ArrowRight size={18} aria-hidden="true" />
+          </a>
+        </motion.div>
       </div>
     </section>
   );

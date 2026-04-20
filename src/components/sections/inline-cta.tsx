@@ -3,6 +3,8 @@
 import { motion, useReducedMotion } from "framer-motion";
 import { ArrowUp } from "lucide-react";
 
+import { PRIMARY_CTA_HREF } from "@/config/landing";
+
 interface InlineCtaProps {
   title?: string;
   subtitle?: string;
@@ -57,7 +59,7 @@ export default function InlineCta({
           </div>
 
           <a
-            href="#hero-form"
+            href={PRIMARY_CTA_HREF}
             className={`inline-flex h-12 shrink-0 items-center gap-2 rounded-xl px-6 text-sm font-semibold shadow-sm transition ${
               isDark
                 ? "bg-white text-primary hover:bg-blue-50"

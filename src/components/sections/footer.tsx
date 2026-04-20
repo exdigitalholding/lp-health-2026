@@ -3,15 +3,19 @@
 import { Mail, MapPin } from "lucide-react";
 import Image from "next/image";
 
+import { FEATURES } from "@/config/landing";
+
+const productLinks = [
+  { label: "Como funciona", href: "#como-funciona" },
+  { label: "Benefícios", href: "#beneficios" },
+  { label: "Segurança", href: "#seguranca" },
+  ...(FEATURES.plans ? [{ label: "Planos", href: "#planos" }] : []),
+];
+
 const columns = [
   {
     title: "Produto",
-    links: [
-      { label: "Como funciona", href: "#como-funciona" },
-      { label: "Benefícios", href: "#beneficios" },
-      { label: "Segurança", href: "#seguranca" },
-      { label: "Planos", href: "#planos" },
-    ],
+    links: productLinks,
   },
   {
     title: "Empresa",
@@ -41,9 +45,9 @@ export default function LpFooter() {
           <Image
             src="/logos/logo.png"
             alt="Health Voice"
-            width={180}
-            height={48}
-            className="h-9 w-auto object-contain"
+            width={240}
+            height={64}
+            className="h-12 w-auto object-contain"
           />
           <p className="mt-4 max-w-xs text-sm leading-relaxed text-gray-500">
             Atenda com presença. Registre com inteligência. O assistente de voz

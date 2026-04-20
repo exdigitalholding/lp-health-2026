@@ -1,7 +1,35 @@
 "use client";
 
 import { motion, useReducedMotion } from "framer-motion";
-import { FileCheck, ListChecks, Repeat2, Sparkles } from "lucide-react";
+import { ArrowRight, FileCheck, ListChecks, Repeat2, Sparkles } from "lucide-react";
+
+import {
+  ImageCarousel,
+  type CarouselSlide,
+} from "@/components/ui/image-carousel";
+import { PRIMARY_CTA_HREF } from "@/config/landing";
+
+const mockups: CarouselSlide[] = [
+  {
+    src: "/images/parceiros/12.png",
+    label: "Dashboard Health Voice",
+    caption:
+      "Tela real do produto: inicie a gravação em poucos toques.",
+  },
+  {
+    label: "Resumo da consulta",
+    caption:
+      "Conteúdo estruturado em seções clínicas: queixa, história, conduta.",
+  },
+  {
+    label: "Histórico do paciente",
+    caption: "Contexto preservado entre retornos, sem releitura completa.",
+  },
+  {
+    label: "Conduta e acompanhamento",
+    caption: "Próximos passos organizados, prontos para o prontuário.",
+  },
+];
 
 const deliverables = [
   {
@@ -87,48 +115,25 @@ export default function WhatYouGet() {
             transition={{ duration: 0.5, delay: 0.15 }}
             className="relative"
           >
-            <div className="aspect-[4/5] w-full overflow-hidden rounded-3xl border border-gray-200 bg-white shadow-2xl shadow-blue-200/40">
-              <div className="flex h-full w-full flex-col">
-                <div className="flex items-center gap-2 border-b border-gray-100 bg-gray-50 px-4 py-3">
-                  <div className="h-3 w-3 rounded-full bg-red-400" />
-                  <div className="h-3 w-3 rounded-full bg-yellow-400" />
-                  <div className="h-3 w-3 rounded-full bg-green-400" />
-                  <span className="ml-3 text-xs text-gray-500">
-                    Consulta — 12/04/2026
-                  </span>
-                </div>
-
-                <div className="flex flex-1 flex-col gap-4 p-6">
-                  <div>
-                    <p className="text-xs font-semibold uppercase tracking-wider text-primary">
-                      Queixa principal
-                    </p>
-                    <div className="mt-2 h-3 w-5/6 rounded bg-gray-200" />
-                    <div className="mt-2 h-3 w-2/3 rounded bg-gray-200" />
-                  </div>
-                  <div>
-                    <p className="text-xs font-semibold uppercase tracking-wider text-primary">
-                      História clínica
-                    </p>
-                    <div className="mt-2 h-3 w-full rounded bg-gray-200" />
-                    <div className="mt-2 h-3 w-11/12 rounded bg-gray-200" />
-                    <div className="mt-2 h-3 w-3/4 rounded bg-gray-200" />
-                  </div>
-                  <div>
-                    <p className="text-xs font-semibold uppercase tracking-wider text-primary">
-                      Conduta
-                    </p>
-                    <div className="mt-2 h-3 w-5/6 rounded bg-gray-200" />
-                    <div className="mt-2 h-3 w-4/6 rounded bg-gray-200" />
-                  </div>
-                  <div className="mt-auto flex items-center gap-2 rounded-lg bg-blue-50 p-3 text-xs text-primary">
-                    <Sparkles size={14} />[ Placeholder — inserir screenshot real do output ]
-                  </div>
-                </div>
-              </div>
-            </div>
+            <ImageCarousel slides={mockups} />
           </motion.div>
         </div>
+
+        <motion.div
+          initial={reduce ? false : { opacity: 0, y: 16 }}
+          whileInView={{ opacity: 1, y: 0 }}
+          viewport={{ once: true, margin: "-60px" }}
+          transition={{ duration: 0.5, delay: 0.1 }}
+          className="mt-14 flex justify-center"
+        >
+          <a
+            href={PRIMARY_CTA_HREF}
+            className="inline-flex h-12 items-center gap-2 rounded-xl bg-primary px-6 text-sm font-semibold text-white shadow-sm transition hover:bg-primary-600"
+          >
+            Criar minha conta grátis
+            <ArrowRight size={18} aria-hidden="true" />
+          </a>
+        </motion.div>
       </div>
     </section>
   );

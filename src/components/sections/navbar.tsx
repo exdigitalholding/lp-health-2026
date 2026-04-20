@@ -5,11 +5,17 @@ import Image from "next/image";
 import Link from "next/link";
 import { useEffect, useState } from "react";
 
-const navLinks = [
+import { FEATURES } from "@/config/landing";
+
+const baseLinks = [
   { href: "#como-funciona", label: "Como funciona" },
   { href: "#beneficios", label: "Benefícios" },
   { href: "#seguranca", label: "Segurança" },
-  { href: "#planos", label: "Planos" },
+];
+
+const navLinks = [
+  ...baseLinks,
+  ...(FEATURES.plans ? [{ href: "#planos", label: "Planos" }] : []),
 ];
 
 export default function LpNavbar() {
@@ -24,18 +30,18 @@ export default function LpNavbar() {
 
   return (
     <header className="sticky top-0 z-40 w-full border-b border-gray-100 bg-white/90 backdrop-blur-md">
-      <div className="mx-auto flex h-16 w-full max-w-7xl items-center justify-between px-6">
+      <div className="mx-auto flex h-24 w-full max-w-7xl items-center justify-between px-6 md:h-28">
         <Link
           href="/"
-          className="tap-target flex items-center gap-2"
+          className="tap-target -my-3 flex items-center"
           aria-label="Health Voice — ir para a página inicial"
         >
           <Image
             src="/logos/logo.png"
             alt="Health Voice"
-            width={180}
-            height={48}
-            className="h-9 w-auto object-contain"
+            width={420}
+            height={120}
+            className="h-20 w-auto object-contain md:h-24"
             priority
           />
         </Link>

@@ -3,6 +3,8 @@
 import { motion, useReducedMotion } from "framer-motion";
 import { Check } from "lucide-react";
 
+import { PRIMARY_CTA_HREF } from "@/config/landing";
+
 const plans = [
   {
     name: "Teste",
@@ -125,7 +127,7 @@ export default function Plans() {
               </ul>
 
               <a
-                href="#hero-form"
+                href={PRIMARY_CTA_HREF}
                 className={`mt-7 inline-flex h-12 items-center justify-center rounded-xl px-4 text-sm font-semibold transition ${
                   p.highlight
                     ? "bg-primary text-white hover:bg-primary-600"

@@ -128,12 +128,9 @@ export default function Hero() {
             poster={DEMO_VIDEO.poster}
             title={DEMO_VIDEO.title}
             duration={DEMO_VIDEO.duration}
-            label="Ver demonstração em 60 segundos"
+            label="Assistir demonstração"
             tone="dark"
           />
-          <p className="mt-4 text-center text-xs text-blue-100/70">
-            * Vídeo demonstrativo — substituir em <code>src/config/landing.ts</code>
-          </p>
         </motion.div>
       </div>
     </section>

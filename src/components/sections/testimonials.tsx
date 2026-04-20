@@ -1,43 +1,21 @@
 "use client";
 
 import { motion, useReducedMotion } from "framer-motion";
-import { Quote } from "lucide-react";
+import { ImageIcon } from "lucide-react";
+import Image from "next/image";
 
-const testimonials = [
-  {
-    quote:
-      "Eu voltei a olhar nos olhos do paciente. O Health Voice cuidou do registro enquanto eu conduzia a consulta — e o prontuário chegou pronto pra revisar.",
-    name: "Dra. Ana Moretti",
-    role: "Clínica Geral",
-    crm: "CRM/SP 000.000",
-    tone: "from-primary-500 to-primary-700",
-  },
-  {
-    quote:
-      "Antes eu gastava o final da tarde inteiro refazendo prontuário de memória. Hoje saio do consultório com o dia fechado. Isso devolveu tempo pra minha família.",
-    name: "Dr. Lucas Pereira",
-    role: "Cardiologia",
-    crm: "CRM/RJ 000.000",
-    tone: "from-primary-400 to-primary-600",
-  },
-  {
-    quote:
-      "Na clínica, a padronização dos registros melhorou muito. É uma ferramenta que respeita o fluxo clínico — não tenta roubar o protagonismo da consulta.",
-    name: "Dra. Marina Tavares",
-    role: "Diretora clínica",
-    crm: "CRM/MG 000.000",
-    tone: "from-primary-600 to-primary-800",
-  },
+/**
+ * Lista de parceiros (placeholders). Troque `src` pela foto real (1000×1000 recomendado).
+ * Se `src` estiver vazio, um placeholder branded aparece no lugar.
+ */
+const partners: Array<{ src?: string; alt: string }> = [
+  { alt: "Foto de médico parceiro 1" },
+  { alt: "Foto de médico parceiro 2" },
+  { alt: "Foto de médico parceiro 3" },
+  { alt: "Foto de médico parceiro 4" },
+  { alt: "Foto de médico parceiro 5" },
+  { alt: "Foto de médico parceiro 6" },
 ];
-
-function initials(name: string) {
-  return name
-    .replace(/^Dra?\.\s*/, "")
-    .split(" ")
-    .map((p) => p[0])
-    .slice(0, 2)
-    .join("");
-}
 
 export default function Testimonials() {
   const reduce = useReducedMotion();
@@ -56,7 +34,7 @@ export default function Testimonials() {
           className="mx-auto max-w-3xl text-center"
         >
           <p className="mb-3 text-sm font-semibold uppercase tracking-wider text-primary">
-            O que dizem quem já usa
+            Quem já usa
           </p>
           <h2
             id="testimonials-heading"
@@ -66,51 +44,42 @@ export default function Testimonials() {
             <br />
             Rotinas reais.
           </h2>
-          <p className="mt-5 text-base leading-relaxed text-gray-600 md:text-lg">
-            Depoimentos de médicos parceiros no Brasil.
-          </p>
         </motion.div>
 
-        <div className="mt-14 grid grid-cols-1 gap-6 md:grid-cols-3">
-          {testimonials.map((t, i) => (
-            <motion.article
-              key={t.name}
-              initial={reduce ? false : { opacity: 0, y: 20 }}
+        <ul
+          aria-label="Galeria de parceiros"
+          className="mt-14 grid grid-cols-2 gap-4 md:grid-cols-3 md:gap-6"
+        >
+          {partners.map((p, i) => (
+            <motion.li
+              key={p.alt}
+              initial={reduce ? false : { opacity: 0, y: 16 }}
               whileInView={{ opacity: 1, y: 0 }}
-              viewport={{ once: true, margin: "-80px" }}
-              transition={{ duration: 0.5, delay: i * 0.1 }}
-              className="group flex flex-col rounded-2xl border border-gray-100 bg-white p-7 shadow-sm transition hover:shadow-xl hover:shadow-blue-100/50"
+              viewport={{ once: true, margin: "-60px" }}
+              transition={{ duration: 0.45, delay: i * 0.06 }}
+              className="relative aspect-square overflow-hidden rounded-2xl border border-gray-100 bg-white shadow-sm transition hover:shadow-lg hover:shadow-blue-100/50"
             >
-              <Quote
-                size={28}
-                className="text-primary/30"
-                aria-hidden="true"
-              />
-              <blockquote className="mt-4 flex-1 text-[15px] leading-relaxed text-gray-700">
-                <p>“{t.quote}”</p>
-              </blockquote>
-
-              <figcaption className="mt-6 flex items-center gap-3 border-t border-gray-100 pt-5">
-                <div
-                  aria-hidden="true"
-                  className={`flex h-11 w-11 items-center justify-center rounded-full bg-gradient-to-br ${t.tone} text-sm font-semibold text-white`}
-                >
-                  {initials(t.name)}
+              {p.src ? (
+                <Image
+                  src={p.src}
+                  alt={p.alt}
+                  fill
+                  sizes="(min-width: 768px) 33vw, 50vw"
+                  className="object-cover"
+                />
+              ) : (
+                <div className="flex h-full w-full flex-col items-center justify-center gap-3 bg-gradient-to-br from-primary-50 via-white to-primary-100 p-4 text-center">
+                  <div className="flex h-14 w-14 items-center justify-center rounded-xl bg-primary/10 text-primary">
+                    <ImageIcon size={24} aria-hidden="true" />
+                  </div>
+                  <span className="text-xs font-medium text-gray-500">
+                    Imagem 1000×1000
+                  </span>
                 </div>
-                <div>
-                  <p className="text-sm font-semibold text-gray-900">{t.name}</p>
-                  <p className="text-xs text-gray-600">
-                    {t.role} • {t.crm}
-                  </p>
-                </div>
-              </figcaption>
-            </motion.article>
+              )}
+            </motion.li>
           ))}
-        </div>
-
-        <p className="mt-10 text-center text-[11px] uppercase tracking-wider text-gray-500">
-          * Depoimentos placeholder — substituir por médicos parceiros reais com CRM
-        </p>
+        </ul>
       </div>
     </section>
   );

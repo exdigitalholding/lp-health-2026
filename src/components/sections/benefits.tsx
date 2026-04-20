@@ -1,7 +1,28 @@
 "use client";
 
 import { motion, useReducedMotion } from "framer-motion";
-import { Building2, HeartHandshake, Stethoscope } from "lucide-react";
+import { ArrowRight, Building2, HeartHandshake, Stethoscope } from "lucide-react";
+
+import {
+  ImageCarousel,
+  type CarouselSlide,
+} from "@/components/ui/image-carousel";
+import { PRIMARY_CTA_HREF } from "@/config/landing";
+
+const appScreens: CarouselSlide[] = [
+  {
+    label: "Tela de gravação",
+    caption: "Interface discreta para iniciar o atendimento com 1 toque.",
+  },
+  {
+    label: "Consulta sendo estruturada",
+    caption: "Resultado organizado por seções clínicas em segundos.",
+  },
+  {
+    label: "Histórico do paciente",
+    caption: "Acesso rápido ao contexto de consultas anteriores.",
+  },
+];
 
 const perspectives = [
   {
@@ -68,7 +89,17 @@ export default function Benefits() {
           </h2>
         </motion.div>
 
-        <div className="mt-14 grid grid-cols-1 gap-6 md:grid-cols-3">
+        <motion.div
+          initial={reduce ? false : { opacity: 0, y: 20 }}
+          whileInView={{ opacity: 1, y: 0 }}
+          viewport={{ once: true, margin: "-80px" }}
+          transition={{ duration: 0.55 }}
+          className="mt-12"
+        >
+          <ImageCarousel slides={appScreens} />
+        </motion.div>
+
+        <div className="mt-16 grid grid-cols-1 gap-6 md:grid-cols-3">
           {perspectives.map((p, i) => {
             const Icon = p.icon;
             return (
@@ -108,6 +139,22 @@ export default function Benefits() {
             );
           })}
         </div>
+
+        <motion.div
+          initial={reduce ? false : { opacity: 0, y: 16 }}
+          whileInView={{ opacity: 1, y: 0 }}
+          viewport={{ once: true, margin: "-60px" }}
+          transition={{ duration: 0.5, delay: 0.1 }}
+          className="mt-14 flex justify-center"
+        >
+          <a
+            href={PRIMARY_CTA_HREF}
+            className="inline-flex h-12 items-center gap-2 rounded-xl bg-primary px-6 text-sm font-semibold text-white shadow-sm transition hover:bg-primary-600"
+          >
+            Quero testar na minha rotina
+            <ArrowRight size={18} aria-hidden="true" />
+          </a>
+        </motion.div>
       </div>
     </section>
   );

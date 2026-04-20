@@ -1,5 +1,6 @@
 "use client";
 
+import { useReducedMotion } from "framer-motion";
 import { PlayCircle, X } from "lucide-react";
 import Image from "next/image";
 import * as React from "react";
@@ -28,10 +29,26 @@ export function VideoPlayer({
   label,
 }: VideoPlayerProps) {
   const [open, setOpen] = React.useState(false);
-  const videoRef = React.useRef<HTMLVideoElement>(null);
+  const [previewReady, setPreviewReady] = React.useState(false);
+  const previewRef = React.useRef<HTMLVideoElement>(null);
+  const modalRef = React.useRef<HTMLVideoElement>(null);
   const closeBtnRef = React.useRef<HTMLButtonElement>(null);
+  const reduce = useReducedMotion();
 
-  // ESC to close + focus management
+  // Pausa o preview enquanto o modal está aberto para evitar áudio/recursos duplicados
+  React.useEffect(() => {
+    if (!previewRef.current) return;
+    if (open) {
+      previewRef.current.pause();
+    } else if (!reduce) {
+      // Retoma o preview silencioso quando o modal fecha
+      previewRef.current.play().catch(() => {
+        // Ignora erros de autoplay (alguns browsers bloqueiam sem interação)
+      });
+    }
+  }, [open, reduce]);
+
+  // ESC to close + focus management + body scroll lock
   React.useEffect(() => {
     if (!open) return;
     const onKey = (e: KeyboardEvent) => {
@@ -39,7 +56,6 @@ export function VideoPlayer({
     };
     document.addEventListener("keydown", onKey);
     document.body.style.overflow = "hidden";
-    // focus close button when modal opens
     closeBtnRef.current?.focus();
     return () => {
       document.removeEventListener("keydown", onKey);
@@ -53,15 +69,16 @@ export function VideoPlayer({
   };
 
   const handleClose = () => {
-    if (videoRef.current) {
-      videoRef.current.pause();
-      videoRef.current.currentTime = 0;
+    if (modalRef.current) {
+      modalRef.current.pause();
+      modalRef.current.currentTime = 0;
     }
     setOpen(false);
   };
 
   const isDark = tone === "dark";
-  const posterAvailable = Boolean(poster);
+  const hasSrc = Boolean(src);
+  const hasPoster = Boolean(poster);
 
   return (
     <>
@@ -79,7 +96,30 @@ export function VideoPlayer({
           className,
         )}
       >
-        {posterAvailable && poster ? (
+        {/* Preview: vídeo silencioso rodando em loop antes de clicar */}
+        {hasSrc && src && (
+          <video
+            ref={previewRef}
+            src={src}
+            poster={poster || undefined}
+            muted
+            loop
+            playsInline
+            autoPlay={!reduce}
+            preload="metadata"
+            aria-hidden="true"
+            tabIndex={-1}
+            onCanPlay={() => setPreviewReady(true)}
+            onLoadedData={() => setPreviewReady(true)}
+            className={cn(
+              "absolute inset-0 h-full w-full object-cover transition-opacity duration-500",
+              previewReady ? "opacity-100" : "opacity-0",
+            )}
+          />
+        )}
+
+        {/* Fallback poster se só tiver imagem e sem vídeo */}
+        {!hasSrc && hasPoster && poster && (
           <Image
             src={poster}
             alt=""
@@ -88,18 +128,23 @@ export function VideoPlayer({
             sizes="(min-width: 1024px) 1024px, 100vw"
             className="object-cover opacity-90 transition group-hover:opacity-100"
           />
-        ) : null}
+        )}
 
+        {/* Overlay para manter legibilidade do botão de play */}
         <div
           aria-hidden="true"
-          className="absolute inset-0 bg-[radial-gradient(circle_at_50%_50%,rgba(13,120,236,0.32),transparent_65%)]"
+          className="absolute inset-0 bg-gradient-to-t from-black/60 via-black/30 to-black/20"
+        />
+        <div
+          aria-hidden="true"
+          className="absolute inset-0 bg-[radial-gradient(circle_at_50%_50%,rgba(13,120,236,0.25),transparent_65%)] opacity-80 transition-opacity group-hover:opacity-60"
         />
 
         <div className="relative flex h-full w-full flex-col items-center justify-center gap-4 p-6 text-white">
-          <div className="flex h-20 w-20 items-center justify-center rounded-full bg-white/12 backdrop-blur-md transition group-hover:scale-105 group-hover:bg-white/20 group-focus-visible:bg-white/20">
+          <div className="flex h-20 w-20 items-center justify-center rounded-full bg-white/15 backdrop-blur-md transition group-hover:scale-105 group-hover:bg-white/25 group-focus-visible:bg-white/25">
             <PlayCircle size={54} strokeWidth={1.4} aria-hidden="true" />
           </div>
-          <span className="text-sm font-medium opacity-90">
+          <span className="text-sm font-semibold tracking-wide drop-shadow-[0_2px_8px_rgba(0,0,0,0.5)]">
             {label ?? title}
           </span>
         </div>
@@ -116,7 +161,7 @@ export function VideoPlayer({
           role="dialog"
           aria-modal="true"
           aria-label={title}
-          className="fixed inset-0 z-[80] flex items-center justify-center bg-black/80 p-4 backdrop-blur-sm"
+          className="fixed inset-0 z-[80] flex items-center justify-center bg-black/85 p-4 backdrop-blur-sm"
           onClick={(e) => {
             if (e.target === e.currentTarget) handleClose();
           }}
@@ -132,7 +177,7 @@ export function VideoPlayer({
               <X size={22} aria-hidden="true" />
             </button>
             <video
-              ref={videoRef}
+              ref={modalRef}
               className="aspect-video w-full"
               src={src}
               controls
