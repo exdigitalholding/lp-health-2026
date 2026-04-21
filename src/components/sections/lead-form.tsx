@@ -16,6 +16,8 @@ import {
   FormMessage,
 } from "@/components/ui/form";
 import { useApiContext } from "@/context/ApiContext";
+import { track } from "@/lib/fpixel";
+import { getFbc, getFbp, newEventId, sendCapiEvent } from "@/lib/meta-capi";
 import { submitLead, type LeadData } from "@/utils/lead";
 import { maskPhone } from "@/utils/masks";
 
@@ -58,6 +60,29 @@ export default function LeadForm({
     try {
       const values = form.getValues() as LeadData;
       await submitLead(values, PostAPI);
+
+      // Evento hibrido: Pixel + CAPI com mesmo event_id (deduplicacao 48h)
+      const eventId = newEventId("Lead");
+      const [firstName, ...rest] = values.name.trim().split(/\s+/);
+      const lastName = rest.join(" ") || undefined;
+
+      track("Lead", { content_name: "Criar conta grátis" }, eventId);
+      void sendCapiEvent({
+        eventName: "Lead",
+        eventId,
+        eventSourceUrl: window.location.href,
+        user: {
+          email: values.email,
+          phone: values.phone,
+          firstName,
+          lastName,
+          country: "br",
+        },
+        custom: { content_name: "Criar conta grátis" },
+        fbp: getFbp(),
+        fbc: getFbc(),
+      });
+
       form.reset();
       router.push("/parabens");
     } catch {
