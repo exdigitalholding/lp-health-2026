@@ -1,32 +1,17 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
 "use client";
+import { getTokenCookieName } from "@/lib/auth-cookies";
 import axios from "axios";
 import { useCookies } from "next-client-cookies";
 import { createContext, useContext, useState } from "react";
 
-import { getTokenCookieName } from "@/lib/auth-cookies";
-
 const baseURL = process.env.NEXT_PUBLIC_API_URL || "https://api.healthvoice.com.br";
 
 export interface ApiContextProps {
-  PostAPI: (
-    url: string,
-    data: unknown,
-    auth: boolean
-  ) => Promise<{ status: number; body: any }>;
-  GetAPI: (
-    url: string,
-    auth: boolean
-  ) => Promise<{ status: number; body: any }>;
-  PutAPI: (
-    url: string,
-    data: unknown,
-    auth: boolean
-  ) => Promise<{ status: number; body: any }>;
-  DeleteAPI: (
-    url: string,
-    auth: boolean
-  ) => Promise<{ status: number; body: any }>;
+  PostAPI: (url: string, data: unknown, auth: boolean) => Promise<{ status: number; body: any }>;
+  GetAPI: (url: string, auth: boolean) => Promise<{ status: number; body: any }>;
+  PutAPI: (url: string, data: unknown, auth: boolean) => Promise<{ status: number; body: any }>;
+  DeleteAPI: (url: string, auth: boolean) => Promise<{ status: number; body: any }>;
   token: string;
   setToken: React.Dispatch<React.SetStateAction<string>>;
   clearToken: () => void;
@@ -66,7 +51,7 @@ export const ApiContextProvider = ({ children }: ProviderProps) => {
         }
       }
       return Promise.reject(error);
-    }
+    },
   );
 
   function config(auth: boolean) {
@@ -98,11 +83,11 @@ export const ApiContextProvider = ({ children }: ProviderProps) => {
           body: "Ops! algo deu errado, tente novamente",
         }
       : connect.status === 413
-      ? {
-          status: connect.status,
-          body: "Ops! algo deu errado, tente novamente ou escolha outra imagem",
-        }
-      : connect;
+        ? {
+            status: connect.status,
+            body: "Ops! algo deu errado, tente novamente ou escolha outra imagem",
+          }
+        : connect;
   };
 
   function treatResponseData(data: any) {
@@ -224,9 +209,7 @@ export const ApiContextProvider = ({ children }: ProviderProps) => {
 export function useApiContext() {
   const context = useContext(ApiContext);
   if (!context) {
-    throw new Error(
-      "useApiContext deve ser usado dentro de um ApiContextProvider"
-    );
+    throw new Error("useApiContext deve ser usado dentro de um ApiContextProvider");
   }
   return context;
 }
